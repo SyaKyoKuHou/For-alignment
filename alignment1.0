@@ -1,0 +1,29 @@
+import subprocess
+
+# FASTAファイル経路
+fasta_file = '/Users/kyokuhousya/Downloads/alignment_result.fasta'
+
+# 配列の入力
+print('アミノ酸配列を入力してください：')
+input_sequences = []
+while True:
+    sequence = input()
+    if sequence:
+        input_sequences.append(sequence)
+    else:
+        break
+
+# FASTA形式の文字列を構築する
+fasta_sequence = '\n'.join(input_sequences) + '\n'
+
+# 入力した配列をファイルに書き込む
+with open(fasta_file, 'a') as f:
+    f.write(fasta_sequence)
+
+print('入力した配列は記録されました')
+# mafftによりアライメント
+mafft_cmd = f'mafft --auto {fasta_file} > output.fasta'
+output = subprocess.check_output(mafft_cmd, shell=True, encoding='utf-8')
+
+# 结果出力
+print(output)
